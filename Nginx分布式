@@ -1,0 +1,38 @@
+proxy_cache_path /home/zhangke/guisheng_catch levels=1:2 keys_zone=my_cache:5m max_size=5g inactive=60m;
+server {
+        listen  8777;
+
+        server_name gs.muxixyz.com;
+        error_page  400  /errpage/400.html;
+        error_page  403  /errpage/403.html;
+        error_page  404  /errpage/404.html;
+        error_page  405  /errpage/405.html;
+
+        location ~ /api/ {
+                    proxy_cache my_cache;
+                    proxy_pass http://127.0.0.1:8888;
+                    include uwsgi_params;
+        }
+
+        location / {
+                proxy_cache my_cache;
+                proxy_pass http://127.0.0.1:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+
+        location ~ /admin  {
+                proxy_cache my_cache;
+                proxy_pass http://127.0.0.1:8080;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+}
+
+NGINX
