@@ -24,7 +24,9 @@ def signup():
             
             conn = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=9)
             conn.set(user.id, str([]))
- 
+            
+            conn2 = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=10)
+            conn2.set(user.id, "")
             return jsonify({
                 "message":"ok"
             })
