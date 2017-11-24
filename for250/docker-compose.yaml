@@ -1,0 +1,16 @@
+for250:
+    build: .
+    container_name: for250
+#    envfile:
+#        - for250.env
+    command: gunicorn --name for250 -b 0.0.0.0:1690 -w 2 wsgi:app
+    ports:
+        - "1690:1690"
+    links:
+        - redis
+
+redis:
+    image: redis
+    command: redis-server --port 6380
+    ports:
+        - "6380:6380"
