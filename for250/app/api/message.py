@@ -14,10 +14,10 @@ def message():
         #message list
         conn = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=10)
         messagelist = eval(conn.get(myid))
-        if messagelist == "":
+        if messagelist == []:
             return jsonify({
                 "message":"none"
             }), 200
         else:
-            conn.set(myid,"")
+            conn.set(myid,str([]))
             return jsonify(messagelist), 200
