@@ -20,7 +20,7 @@ def like():
             mylikes.append(otherid)
         conn1.set(myid, str(mylikes))
         
-        otherlikes = eval(conn.get(otherid))
+        otherlikes = eval(conn1.get(otherid))
         if myid in otherlikes:
             other = User.query.filter_by(id = otherid).first()
             #conn2 is for message 
