@@ -7,5 +7,8 @@ WORKDIR $DEPLOY_PATH
 
 Add requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+RUN python3 manage.py db init
+RUN python3 manage.py db migrate
+RUN python3 manage.py createdb
 
 Add . .
