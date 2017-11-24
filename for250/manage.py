@@ -29,13 +29,12 @@ import sys
 import os
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
-from guisheng_app import db, app
-from guisheng_app.models import User, Role, News, Everydaypic, Article,Image,\
-        Picture, Interaction, Comment, Like, Light, Collect,PostTag,Tag,Suggestion,Permission
+from app import db, app
+from app.models import User
 
 # 编码设置
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 
 manager = Manager(app)
@@ -49,20 +48,6 @@ def make_shell_context():
         app = app,
         db = db,
         User = User,
-        Role = Role,
-        News = News,
-        Everydaypic = Everydaypic,
-        Article = Article,
-        Picture = Picture,
-        Interaction = Interaction,
-        Comment = Comment,
-        Collect = Collect,
-        Like = Like,
-        Light = Light,
-        PostTag = PostTag,
-        Tag = Tag,
-        Suggestion = Suggestion,
-        Image = Image
     )
 
 
@@ -93,7 +78,7 @@ def admin():
     )
     db.session.add(u)
     db.session.commit()
-    print "<admin user %s add in database>" % username
+    print ("<admin user %s add in database>" % username)
 
 @manager.command
 def add_test_admin():
@@ -110,7 +95,7 @@ def add_test_admin():
     )
     db.session.add(u)
     db.session.commit()
-    print "<test admin user %s add in database>" % username
+    print ("<test admin user %s add in database>" % username)
 
 @manager.command
 def adduser():
@@ -128,7 +113,7 @@ def adduser():
     )
     db.session.add(u)
     db.session.commit()
-    print "<user %s add in database>" % name
+    print ("<user %s add in database>" % name)
 
 @manager.command
 def insert_roles():
@@ -155,7 +140,7 @@ def insert_roles():
         role.default = roles[r][1]
         db.session.add(role)
     db.session.commit()
-    print 'roles has been inserted!'
+    print ('roles has been inserted!')
     #return 'roles has been inserted!'
 
 
