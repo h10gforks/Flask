@@ -5,10 +5,10 @@ ENV DEPLOY_PATH /for250
 RUN mkdir -p $DEPLOY_PATH
 WORKDIR $DEPLOY_PATH
 
-Add requirements.txt requirements.txt
-Add manage.py manage.py
-Add app app
-Add config.py config.py
+COPY requirements.txt requirements.txt
+COPY manage.py manage.py
+COPY app app
+COPY config.py config.py
 
 RUN pip install -r requirements.txt
 RUN python3 manage.py db init
