@@ -22,7 +22,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             
-            conn = redis.StrictRedis(host='localhost', decode_responses=True, port=6379, db=9)
+            conn = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=9)
             conn.set(user.id, str([]))
  
             return jsonify({

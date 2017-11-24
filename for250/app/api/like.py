@@ -12,20 +12,41 @@ def like():
     if request.method == 'POST':
         myid = request.get_json().get('myid')
         otherid = request.get_json().get('otherid')
-         
-        conn = redis.StrictRedis(host='localhost', decode_responses=True, port=6379, db=9)
-        mylikes = eval(conn.get(myid))
+        
+        #conn1 is for who like who 
+        conn1 = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=9)
+        mylikes = eval(conn1.get(myid))
         if otherid not in mylikes:
             mylikes.append(otherid)
-        conn.set(myid, str(mylikes))
+        conn1.set(myid, str(mylikes))
         
         otherlikes = eval(conn.get(otherid))
         if myid in otherlikes:
             other = User.query.filter_by(id = otherid).first()
+            #conn2 is for message 
+            conn2 = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=10)
+            #获取对方消息列表
+            messagelist = eval(conn2.get(otherid))
+            flag = 0
+            for m in messagelist:
+                if m['uid'] == myid:
+                    flag = 1
+            
+            if flag == 0:
+                me = User.query.filter_by(id = myid).first()
+                dic = {}
+                dic['uid'] = me.id
+                dic['username'] = me.username
+                dic['specialty'] = me.specialty
+                dic['qq'] = me.qq
+                messagelist.append(dic)
+                conn2.set(otherid, str(messagelist))
+
             return jsonify({
                 "message":"ok",
                 "qq":other.qq
             }),200
+
         else:
             return jsonify({
                 "message":"fail"
