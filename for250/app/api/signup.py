@@ -6,6 +6,7 @@ from app.models import User
 
 import json
 import redis
+import pickle
 
 @api.route('/signup/', methods = ['POST'])
 def signup():
@@ -22,11 +23,14 @@ def signup():
             db.session.add(user)
             db.session.commit()
             
-            conn = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=9)
-            conn.set(user.id, str([]))
+            conn = redis.StrictRedis(host='redis', port=6380, db=9)
+            alist = []
+            conn.set(user.id, pickle.dumps(alist))
+            conn2 = redis.StrictRedis(host='redis', port=6380, db=10)
+            conn2.set(user.id, pickle.dumps(alist))
  
             return jsonify({
-                "message":"ok"
+                "uid":user.id
             })
         else:
             return jsonify({

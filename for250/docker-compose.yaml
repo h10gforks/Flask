@@ -11,6 +11,8 @@ for250:
 
 redis:
     image: redis
-    command: redis-server --port 6380
+    volumes:
+        - .:/redisdata
+    command: redis-server --appendonly yes --port 6380
     ports:
         - "6380:6380"

@@ -4,8 +4,11 @@ from flask import request,jsonify,Response
 from flask_login import login_user, logout_user, current_user, login_required
 from app.models import User
 
+import pickle
 import json
 import redis
+
+#注意docker-compose 中redis不能持久化
 
 @api.route('/like/', methods = ['POST'])
 def like():
@@ -14,19 +17,20 @@ def like():
         otherid = request.get_json().get('otherid')
         
         #conn1 is for who like who 
-        conn1 = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=9)
-        mylikes = eval(conn1.get(myid))
+        conn1 = redis.StrictRedis(host='redis', port=6380, db=9)
+        mylikes = pickle.loads(conn1.get(myid))
         if otherid not in mylikes:
             mylikes.append(otherid)
-        conn1.set(myid, str(mylikes))
-        
-        otherlikes = eval(conn1.get(otherid))
+            #更新mylikes
+            conn1.set(myid, pickle.dumps(mylikes))
+
+        otherlikes = pickle.loads(conn1.get(otherid))
         if myid in otherlikes:
             other = User.query.filter_by(id = otherid).first()
             #conn2 is for message 
-            conn2 = redis.StrictRedis(host='redis', decode_responses=True, port=6380, db=10)
+            conn2 = redis.StrictRedis(host='redis', port=6380, db=10)
             #获取对方消息列表
-            messagelist = eval(conn2.get(otherid))
+            messagelist = pickle.loads(conn2.get(otherid))
             flag = 0
             for m in messagelist:
                 if m['uid'] == myid:
@@ -40,7 +44,7 @@ def like():
                 dic['specialty'] = me.specialty
                 dic['qq'] = me.qq
                 messagelist.append(dic)
-                conn2.set(otherid, str(messagelist))
+                conn2.set(otherid, pickle.dumps(messagelist))
 
             return jsonify({
                 "message":"ok",

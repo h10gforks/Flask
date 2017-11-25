@@ -14,9 +14,10 @@ def getpeople(myid):
             if u.id == myid:
                 users.remove(u)
         
-        return Response(json.dumps([{
-            "uid":u.id,
-            "username":u.username,
-            "specialty":u.specialty
-            } for u in users] 
+        return Response(json.dumps({
+            "people":[{
+                "uid":u.id,
+                "username":u.username,
+                "specialty":u.specialty
+                } for u in users]}
         ),mimetype='application/json')
