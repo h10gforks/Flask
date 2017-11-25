@@ -1,3 +1,4 @@
+#coding:utf-8
 from . import api
 from app import db
 from flask import request,jsonify,Response

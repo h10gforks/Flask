@@ -6,6 +6,8 @@ for250:
     command: gunicorn --name for250 -b 0.0.0.0:1690 -w 2 wsgi:app
     ports:
         - "1690:1690"
+    external_links:
+        - mysqlfor250:mysql
     links:
         - redis
 

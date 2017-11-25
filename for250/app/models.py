@@ -1,3 +1,4 @@
+#coding:utf-8
 from flask import current_app,request
 from . import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash

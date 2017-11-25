@@ -1,3 +1,4 @@
+#coding:utf-8
 """
 project management
  -- database management
@@ -31,10 +32,6 @@ from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 from app import db, app
 from app.models import User
-
-# 编码设置
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
 
 
 manager = Manager(app)

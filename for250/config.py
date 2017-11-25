@@ -7,7 +7,7 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-
+    
     @staticmethod
     def init_app(app):
         pass
@@ -28,8 +28,7 @@ more connection URI format:
 class DevelopmentConfig(Config):
     """development configuration"""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
-
+    SQLALCHEMY_DATABASE_URI = "mysql://root:ilovemuxi@172.17.0.2:3306/mysqlfor250"
 """
 testing configuration
  -- TESTING: True
